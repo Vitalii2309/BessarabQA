@@ -1,44 +1,51 @@
---1. Выбрать все ордера(Orders) покупателя(Customers) Ernst Handel (одним запросом по имени покупателя)
+--1. Р’С‹Р±СЂР°С‚СЊ РІСЃРµ РѕСЂРґРµСЂР°(Orders) РїРѕРєСѓРїР°С‚РµР»СЏ(Customers) Ernst Handel (РѕРґРЅРёРј Р·Р°РїСЂРѕСЃРѕРј РїРѕ РёРјРµРЅРё РїРѕРєСѓРїР°С‚РµР»СЏ
 
 SELECT * FROM [Orders]
 LEFT JOIN [Customers]
 ON Customers.CustomerID = Orders.CustomerID
 WHERE Customers.CustomerName = 'Ernst Handel'
 
---2. Выбрать все ордера, которые были сформированы в период с 1996-08-01 по 1996-08-08
+--2. Р’С‹Р±СЂР°С‚СЊ РІСЃРµ РѕСЂРґРµСЂР°, РєРѕС‚РѕСЂС‹Рµ Р±С‹Р»Рё СЃС„РѕСЂРјРёСЂРѕРІР°РЅС‹ РІ РїРµСЂРёРѕРґ СЃ 1996-08-01 РїРѕ 1996-08-08
 
 SELECT * FROM [Orders]
 WHERE OrderDate BETWEEN '1996-08-01' AND '1996-08-08'
 ORDER BY OrderDate 
 
---3. Выбрать покупателей, у которых нет ордеров
+--3. Р’С‹Р±СЂР°С‚СЊ РїРѕРєСѓРїР°С‚РµР»РµР№, Сѓ РєРѕС‚РѕСЂС‹С… РЅРµС‚ РѕСЂРґРµСЂРѕРІ
 
 SELECT * FROM [Customers]
 JOIN Orders ON Orders.CustomerID = Customers.CustomerID
 WHERE Orders.OrderDate IS NULL
 
---4. В таблице Customers вывести 2 столбца (страна и город) и отсортировать страны в алфавитном порядке (A-Z), а города в обратном (Z-A)
+--4. Р’ С‚Р°Р±Р»РёС†Рµ Customers РІС‹РІРµСЃС‚Рё 2 СЃС‚РѕР»Р±С†Р° (СЃС‚СЂР°РЅР° Рё РіРѕСЂРѕРґ) Рё РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°С‚СЊ СЃС‚СЂР°РЅС‹ РІ Р°Р»С„Р°РІРёС‚РЅРѕРј РїРѕСЂСЏРґРєРµ (A-Z), Р° РіРѕСЂРѕРґР° РІ РѕР±СЂР°С‚РЅРѕРј (Z-A)
 
 SELECT Country,City FROM [Customers]
 ORDER BY Country ASC, City DESC;
 
---5.В таблице ордеров (Orders) вывести список всех ордеров, которые содержат в себе продукт 'Mozzarella di Giovanni'
+--5. Р’ С‚Р°Р±Р»РёС†Рµ РѕСЂРґРµСЂРѕРІ (Orders) РІС‹РІРµСЃС‚Рё СЃРїРёСЃРѕРє РІСЃРµС… РѕСЂРґРµСЂРѕРІ, РєРѕС‚РѕСЂС‹Рµ СЃРѕРґРµСЂР¶Р°С‚ РІ СЃРµР±Рµ РїСЂРѕРґСѓРєС‚ 'Mozzarella di Giovanni'
 
 SELECT Orders.OrderID,Orders.OrderDate,Products.ProductName FROM [Orders]
 JOIN OrderDetails ON OrderDetails.OrderID = Orders.OrderID
 JOIN Products ON Products.ProductID = OrderDetails.ProductID
 WHERE Products.ProductName =  'Mozzarella di Giovanni'
 
---6.Вывести список не повторяющихся стран в таблице Customers
+--6. Р’С‹РІРµСЃС‚Рё СЃРїРёСЃРѕРє РЅРµ РїРѕРІС‚РѕСЂСЏСЋС‰РёС…СЃСЏ СЃС‚СЂР°РЅ РІ С‚Р°Р±Р»РёС†Рµ Customers
 
 SELECT DISTINCT (Country) FROM [Customers]
 
---7.Найти всех покупателей, в имени которых встречается буквосочетание 'co' (латинские символы)
+--7. РќР°Р№С‚Рё РІСЃРµС… РїРѕРєСѓРїР°С‚РµР»РµР№, РІ РёРјРµРЅРё РєРѕС‚РѕСЂС‹С… РІСЃС‚СЂРµС‡Р°РµС‚СЃСЏ Р±СѓРєРІРѕСЃРѕС‡РµС‚Р°РЅРёРµ 'co' (Р»Р°С‚РёРЅСЃРєРёРµ СЃРёРјРІРѕР»С‹)
 
 SELECT CustomerName FROM [Customers]
 WHERE Customers.CustomerName LIKE '%co%'
 
---8.В таблице Products посчитать стоимость первых трех товаров в списке
+--8. Р’ С‚Р°Р±Р»РёС†Рµ Products РїРѕСЃС‡РёС‚Р°С‚СЊ СЃС‚РѕРёРјРѕСЃС‚СЊ РїРµСЂРІС‹С… С‚СЂРµС… С‚РѕРІР°СЂРѕРІ РІ СЃРїРёСЃРєРµ
 
 SELECT SUM (Price) AS SUM  FROM [Products]
 WHERE Products.ProductID <3
+
+--9. РџРѕР»СѓС‡РёС‚СЊ С‡РёСЃР»РѕРІСѓСЋ СЂР°Р·РЅРёС†Сѓ РјРµР¶РґСѓ РѕР±С‰РёРј РєРѕР»-РІРѕРј РІСЃРµС… СЃС‚СЂР°РЅ (РІРєР»СЋС‡Р°СЏ РїРѕРІС‚РѕСЂСЏСЋС‰РёРµСЃСЏ) РІ РєРѕР»РѕРЅРєРµ вЂњCountriesвЂќ, С‚Р°Р±Р»РёС†С‹ вЂњCustomersвЂќ, Рё РєРѕР»-РІРѕРј СѓРЅРёРєР°Р»СЊРЅС‹С… СЃС‚СЂР°РЅ.
+
+SELECT COUNT (COUNTRY) AS 'ALL COUNTRIES',
+COUNT (DISTINCT COUNTRY) AS 'UNIQUE COUNTRIES',
+(COUNT (COUNTRY) - COUNT (DISTINCT COUNTRY)) AS RESULT
+FROM CUSTOMERS;
